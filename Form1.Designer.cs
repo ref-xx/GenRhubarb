@@ -53,6 +53,7 @@
             textBox8 = new TextBox();
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
+            button12 = new Button();
             button11 = new Button();
             button10 = new Button();
             label6 = new Label();
@@ -156,7 +157,6 @@
             // 
             // button5
             // 
-            button5.Enabled = false;
             button5.Location = new Point(197, 162);
             button5.Name = "button5";
             button5.Size = new Size(255, 23);
@@ -269,7 +269,7 @@
             // 
             // button9
             // 
-            button9.Location = new Point(160, 326);
+            button9.Location = new Point(197, 244);
             button9.Name = "button9";
             button9.Size = new Size(255, 23);
             button9.TabIndex = 20;
@@ -299,6 +299,7 @@
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(button12);
             tabPage1.Controls.Add(button11);
             tabPage1.Controls.Add(button10);
             tabPage1.Controls.Add(textBox3);
@@ -321,6 +322,16 @@
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Convert Wav";
             tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // button12
+            // 
+            button12.Location = new Point(308, 7);
+            button12.Name = "button12";
+            button12.Size = new Size(150, 23);
+            button12.TabIndex = 27;
+            button12.Text = "Open Github Page";
+            button12.UseVisualStyleBackColor = true;
+            button12.Click += button12_Click;
             // 
             // button11
             // 
@@ -491,6 +502,7 @@
             ClientSize = new Size(488, 526);
             Controls.Add(tabControl1);
             Controls.Add(outputTextBox);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
             Text = "GenRhubarb Wav2Mp4 Lip Sync V0.1 by Ref - 10/2023";
             Load += Form1_Load;
@@ -550,5 +562,6 @@
         private Button button11;
         private GroupBox groupBox1;
         private Label label8;
+        private Button button12;
     }
 }

@@ -1,3 +1,5 @@
+// Lousy but fast coding by ref :D
+// it mostly works, updates are wellcome
 
 using System;
 using System.Collections.Generic;
@@ -468,7 +470,7 @@ namespace GenRhubarb
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardInput = true,
-                    CreateNoWindow = false,
+                    CreateNoWindow = true,
                     RedirectStandardError = true
                 },
                 EnableRaisingEvents = true
@@ -624,6 +626,13 @@ namespace GenRhubarb
         private void tabPage4_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+
+            string url = "https://github.com/ref-xx/GenRhubarb/"; // rhubarb url
+            Process.Start(new ProcessStartInfo { FileName = url, UseShellExecute = true });
         }
     }
 
