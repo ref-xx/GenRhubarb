@@ -7,7 +7,7 @@ by Arda Erdikmen (c)2023
 #### This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.
 
 ## Installation:
-1. unpack archive to any directory that you have full access
+1. download the binary release from releases (see right hand side of this window). unpack archive to any directory that you have full access
 2. Put rhubarb.exe (and other dependacies for it if available) at the same directory with GenRhubarb.exe https://github.com/DanielSWolf/rhubarb-lip-sync
 3. put ffmpeg.exe binary and other dependacies in ffmpeg/ folder. genRhubarb looks for "ffmpeg/ffmpeg.exe" relative to itself.  https://github.com/GyanD/codexffmpeg/releases/
 
