@@ -22,5 +22,5 @@ Hope it works. that's it.
 4. set resolution.
 5. click "start encoding",  you will see some text output in the status bar, give some time, those are intensive conversions, after a while conversions will finish and you will see the mp4 file in the same folder.
 
-
+![Image](https://github.com/ref-xx/GenRhubarb/blob/master/ReadmeScreeenshot.jpg)
     
