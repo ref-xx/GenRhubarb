@@ -1,7 +1,7 @@
 # GenRhubarb
 A wav to mp4 lip sync converter gui tool for rhubarb and ffmpeg Windows
 
-by Arda Erdikmen 2023
+by Arda Erdikmen (c)2023
  
 
 #### This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.
