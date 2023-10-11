@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Windows.Forms;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GenRhubarb
@@ -18,9 +19,11 @@ namespace GenRhubarb
 
         void readjson()
         {
-            string jsonFilePath = textBox1.Text;
-            string jsonString = File.ReadAllText(jsonFilePath);
 
+            string jsonFilePath = textBox1.Text;
+            if (jsonFilePath == "") return;
+            string jsonString = File.ReadAllText(jsonFilePath);
+            listBox1.Items.Clear();
             string[] filenames;
 
             if (checkBox1.Checked)
@@ -254,7 +257,7 @@ namespace GenRhubarb
                     }
                     else
                     {
-                        button2.Text = "Parse Json Now!";
+                        button2.Text = "4. Generate Animation";
 
                     }
                 }
@@ -264,26 +267,32 @@ namespace GenRhubarb
 
         private void button4_Click(object sender, EventArgs e)
         {
+            saveFFconcat();
+
+        }
+
+        void saveFFconcat()
+        {
             string jsonFilePath = textBox1.Text;
             string newPath = Path.ChangeExtension(jsonFilePath, "fct");
+            SaveListBoxItemsToFile(listBox1, newPath);
             string newOutPath = Path.ChangeExtension(jsonFilePath, "mp4");
             newOutPath = System.IO.Path.GetFileName(newOutPath);
-            SaveListBoxItemsToFile(listBox1, newPath);
-            newPath = System.IO.Path.GetFileName(newPath);
-            textBox2.Text = textBox4.Text.Replace("<res>", textBox3.Text).Replace("<fct>", newPath).Replace("<out>", newOutPath);
-            button5.Enabled = true;
-
-
+            textBox8.Text = newOutPath;
+            updateExec();
         }
 
         void updateExec()
         {
-            string jsonFilePath = textBox1.Text;
+            string jsonFilePath = textBox6.Text;
             string newPath = Path.ChangeExtension(jsonFilePath, "fct");
-            string newOutPath = Path.ChangeExtension(jsonFilePath, "mp4");
-            newOutPath = System.IO.Path.GetFileName(newOutPath);
+            string aud = "";
+            if (!checkBox3.Checked) aud = "-i " + Path.GetFileName(jsonFilePath);
             newPath = System.IO.Path.GetFileName(newPath);
-            textBox2.Text = textBox4.Text.Replace("<res>", textBox3.Text).Replace("<fct>", newPath).Replace("<out>", newOutPath);
+            string w = GetValidNumb(textBox3.Text, 1);
+            string h = GetValidNumb(textBox3.Text, 2);
+
+            textBox2.Text = textBox4.Text.Replace("<w>", w).Replace("<h>", h).Replace("<fct>", newPath).Replace("<out>", textBox8.Text).Replace("<include_audio>", aud);
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -293,8 +302,18 @@ namespace GenRhubarb
 
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
+            if (CheckValidNumb(textBox3.Text)) textBox3.BackColor = SystemColors.Window; else textBox3.BackColor = Color.Red;
             updateExec();
+
+
         }
+        static int GetClosestEvenNumber(int value)
+        {
+            // Calculate the closest even number
+            int closestEven = value / 2 * 2;
+            return closestEven;
+        }
+
         static async Task ExecuteCommandAsync(string command, TextBox outputTextBox)
         {
             using (Process process = new Process())
@@ -378,6 +397,11 @@ namespace GenRhubarb
                 newPath = System.IO.Path.GetFileName(newPath);
                 textBox7.Text = textBox5.Text.Replace("<wav>", jsonFilePath).Replace("<json>", newPath);
 
+                string newOutPath = Path.ChangeExtension(jsonFilePath, "mp4");
+                newOutPath = System.IO.Path.GetFileName(newOutPath);
+                textBox8.Text = newOutPath;
+
+
             }
         }
 
@@ -404,12 +428,204 @@ namespace GenRhubarb
                 if (File.Exists(newPath))
                 {
                     textBox1.Text = Path.ChangeExtension(jsonFilePath, "json");
+                    outputTextBox.Text = "Generating lip sync animation...";
+                    Application.DoEvents();
+
+                    readjson();
+                    outputTextBox.Text = "Preparing to encode mp4....";
+                    Application.DoEvents();
+
+                    saveFFconcat();
+                    outputTextBox.Text = "Encoding now...";
+                    Application.DoEvents();
+
+                    newstartencode();
+                    Application.DoEvents();
 
                 }
             }
+            else if (outputTextBox.Text.Contains("frames duplicated"))
+            {
+                outputTextBox.Text = "Encoding done.";
+                tabControl1.TabIndex = 3;
+            }
+        }
+
+
+        private void newstartencode()
+        {
+
+            checkBox2.Checked = false;
+            string arguments = textBox2.Text;
+
+            System.Diagnostics.Process process = new System.Diagnostics.Process();
+            process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = @"ffmpeg\ffmpeg.exe",
+                    Arguments = arguments,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardInput = true,
+                    CreateNoWindow = false,
+                    RedirectStandardError = true
+                },
+                EnableRaisingEvents = true
+            };
+
+            process.Start();
+
+            string processOutput = null;
+            while ((processOutput = process.StandardError.ReadLine()) != null)
+            {
+                // do something with processOutput
+                //Debug.WriteLine(processOutput);
+
+
+                //listBox3.Items.Clear();
+                //listBox3.Items.Add(processOutput);
+                outputTextBox.Text = processOutput;
+                if (checkBox2.Checked)
+                {
+                    process.StandardInput.WriteLine("q");
+                }
+                Application.DoEvents();
+                //this.Refresh();
+
+            }
+            process.WaitForExit();
+
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            newstartencode();
+        }
+
+        static string DoubleNumbersInString(string input, bool fix)
+        {
+            // Split the string into parts using 'x' as the separator
+            string[] parts = input.Split('x');
+
+            if (parts.Length == 2)
+            {
+                if (int.TryParse(parts[0], out int firstNumber) && int.TryParse(parts[1], out int secondNumber))
+                {
+
+                    if (fix)
+                    {
+                        firstNumber = GetClosestEvenNumber(firstNumber);
+                        secondNumber = GetClosestEvenNumber(secondNumber);
+                    }
+                    else
+                    {
+                        // Double the numbers
+                        firstNumber *= 2;
+                        secondNumber *= 2;
+                    }
+                    // Reconstruct the string
+                    return $"{firstNumber}x{secondNumber}";
+                }
+            }
+
+            // Return the original string if parsing or doubling failed
+            return input;
+        }
+
+        static bool CheckValidNumb(string input)
+        {
+            // Split the string into parts using 'x' as the separator
+            string[] parts = input.Split('x');
+
+            if (parts.Length == 2)
+            {
+                if (int.TryParse(parts[0], out int firstNumber) && int.TryParse(parts[1], out int secondNumber))
+                {
+                    if ((firstNumber % 2 == 0) && (secondNumber % 2 == 0)) { return true; }
+
+
+                }
+            }
+
+            // Return the original string if parsing or doubling failed
+            return false;
+        }
+
+        static string GetValidNumb(string input, int part)
+        {
+            // Split the string into parts using 'x' as the separator
+            string[] parts = input.Split('x');
+
+            if (parts.Length == 2)
+            {
+                if (int.TryParse(parts[0], out int firstNumber) && int.TryParse(parts[1], out int secondNumber))
+                {
+                    if (part == 1) return firstNumber.ToString();
+                    if (part == 2) return secondNumber.ToString();
+
+                }
+            }
+
+            // Return the original string if parsing or doubling failed
+            return "0";
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            textBox3.Text = DoubleNumbersInString(textBox3.Text, false);
+        }
+
+        static void OpenFolderInExplorer(string folderPath)
+        {
+            if (System.IO.Directory.Exists(folderPath))
+            {
+                Process.Start("explorer.exe", folderPath);
+            }
+            else
+            {
+                Console.WriteLine("The specified folder does not exist.");
+            }
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            OpenFolderInExplorer(Path.GetDirectoryName(textBox1.Text));
+        }
+
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
+
+            updateExec();
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            textBox3.Text = DoubleNumbersInString(textBox3.Text, true);
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            string firstItem = listBox2.Items.Count > 0 ? listBox2.Items[0].ToString() : "";
+            if (firstItem == "")
+            {
+                textBox3.Text = "320x256";
+                return;
+            }
+            using (Image image = Image.FromFile(firstItem))
+            {
+                int width = image.Width;
+                int height = image.Height;
+                textBox3.Text = width + "x" + height;
+            }
+        }
+
+        private void tabPage4_Click(object sender, EventArgs e)
+        {
+
         }
     }
-
 
     public class MouthCue
     {
@@ -429,7 +645,5 @@ namespace GenRhubarb
         public Metadata Metadata { get; set; }
         public List<MouthCue> MouthCues { get; set; }
     }
-
-
 
 }

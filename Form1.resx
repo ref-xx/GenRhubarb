@@ -117,4 +117,41 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="label5.Text" xml:space="preserve">
+    <value>And also pick the first image of
+your 9 rhubarb mouth shapes as PNG. 
+files must end like A.png... B.png... X.png...
+You may wish to change the size of your output video.
+The dimensions must be divisible by 2</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>This is an alternate starting point.
+
+you may start from an old rhubarb json file,
+skipping the long rhubarb parsing process. 
+
+But you have to manually move through pages 
+and give save/encode commands by hand.
+
+To start preparing the mp4, you have to go to next page 
+and generate animation.</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>This page shows a preview of animation frames
+
+You may go back and change mouth shapes files
+and regenerate animation as you see fit.
+
+If you have problems ffmpeg not finding png files, you may wanto to disable full paths
+and move animation frames near fmpeg
+</value>
+  </data>
+  <data name="label8.Text" xml:space="preserve">
+    <value>You may modify the rhubarb and ffmeg parameters here, 
+these modifications persist throught your session.
+After modifying template you have to re-select your WAV file,
+to start using new templates for conversion.
+
+</value>
+  </data>
 </root>
