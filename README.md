@@ -11,7 +11,9 @@ by Arda Erdikmen (c)2023
 2. Place rhubarb.exe (and any other dependencies, if available) in the same directory as GenRhubarb.exe. https://github.com/DanielSWolf/rhubarb-lip-sync
 3. Place ffmpeg.exe binary and other dependencies in ffmpeg/ folder. genRhubarb looks for "ffmpeg/ffmpeg.exe" relative to itself.  https://github.com/GyanD/codexffmpeg/releases/
 
-that's it.
+![Image](https://github.com/ref-xx/GenRhubarb/blob/master/ReadmeFolderStructure.jpg)
+
+Hope it works. that's it. 
 
 ## Usage
 1. Run the GenRhubarb
