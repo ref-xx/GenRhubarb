@@ -1,13 +1,14 @@
 # GenRhubarb
-A  wav to mp4 converter gui tool for rhubarb and ffmpeg
+A wav to mp4 lip sync converter gui tool for rhubarb and ffmpeg 
 by Arda Erdikmen 2023
+for Windows
 
 #### This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.
 
 ## Installation:
 1. unpack archive to any directory that you have full access
-2. Put rhubarb.exe (and other dependacies for it if available) at the same directory with GenRhubarb.exe
-3. put ffmpeg.exe binary and other dependacies in ffmpeg/ folder. genRhubarb looks for "ffmpeg/ffmpeg.exe" relative to itself.
+2. Put rhubarb.exe (and other dependacies for it if available) at the same directory with GenRhubarb.exe https://github.com/DanielSWolf/rhubarb-lip-sync
+3. put ffmpeg.exe binary and other dependacies in ffmpeg/ folder. genRhubarb looks for "ffmpeg/ffmpeg.exe" relative to itself.  https://github.com/GyanD/codexffmpeg/releases/
 that's it.
 
 ## Usage
